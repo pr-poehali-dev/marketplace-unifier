@@ -20,6 +20,7 @@ const STEPS = ["Принят", "Оплачен", "Собирается", "Дос
 
 interface OrdersPageProps {
   onNavigate: (page: string) => void;
+  user?: { id: number; name: string; permission_level: string } | null;
 }
 
 export default function OrdersPage({ onNavigate }: OrdersPageProps) {

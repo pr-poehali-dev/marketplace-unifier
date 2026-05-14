@@ -25,7 +25,11 @@ const MOCK_DIALOG: Record<number, { text: string; fromMe: boolean; time: string 
   ],
 };
 
-export default function ChatPage() {
+interface ChatPageProps {
+  user?: { id: number; name: string; permission_level: string } | null;
+}
+
+export default function ChatPage(_props: ChatPageProps) {
   const [activeChat, setActiveChat] = useState<number | null>(1);
   const [message, setMessage] = useState("");
   const [dialogs, setDialogs] = useState(MOCK_DIALOG);

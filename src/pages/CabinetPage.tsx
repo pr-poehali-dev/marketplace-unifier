@@ -31,12 +31,14 @@ const STATUS_LABELS: Record<string, string> = {
 
 interface CabinetPageProps {
   onNavigate: (page: string) => void;
+  user?: { id: number; name: string; permission_level: string } | null;
+  onLogout?: () => void;
 }
 
-export default function CabinetPage({ onNavigate }: CabinetPageProps) {
+export default function CabinetPage({ onNavigate, user, onLogout }: CabinetPageProps) {
   const [activeTab, setActiveTab] = useState("overview");
   const [isEditing, setIsEditing] = useState(false);
-  const [name, setName] = useState("Алексей Морозов");
+  const [name, setName] = useState(user?.name || "Алексей Морозов");
   const [bio, setBio] = useState("Продаю электронику и гаджеты. Более 200 успешных сделок.");
   const { toast } = useToast();
 
@@ -93,7 +95,7 @@ export default function CabinetPage({ onNavigate }: CabinetPageProps) {
             ))}
             <div className="pt-2 border-t border-border/50 mt-2">
               <button
-                onClick={() => onNavigate("home")}
+                onClick={() => { if (onLogout) onLogout(); else onNavigate("home"); }}
                 className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground transition-all"
               >
                 <Icon name="LogOut" size={15} />

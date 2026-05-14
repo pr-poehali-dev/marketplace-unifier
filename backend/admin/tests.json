@@ -1,0 +1,30 @@
+{
+  "tests": [
+    {
+      "name": "Admin login correct",
+      "method": "POST",
+      "path": "/login",
+      "body": {"email": "admin@market.ru", "password": "admin123"},
+      "expectedStatus": 200,
+      "expectedBody": {"session_id": "string"},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Admin login wrong",
+      "method": "POST",
+      "path": "/login",
+      "body": {"email": "admin@market.ru", "password": "wrong"},
+      "expectedStatus": 401,
+      "expectedBody": {"error": "string"},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Dashboard without session",
+      "method": "GET",
+      "path": "/dashboard",
+      "expectedStatus": 403,
+      "expectedBody": {"error": "string"},
+      "bodyMatcher": "partial"
+    }
+  ]
+}

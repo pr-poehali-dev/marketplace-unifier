@@ -10,9 +10,12 @@ interface HeaderProps {
   cartCount: number;
   isDark: boolean;
   onToggleDark: () => void;
+  user?: { id: number; name: string; permission_level: string } | null;
+  onAuthClick?: () => void;
+  onLogout?: () => void;
 }
 
-export default function Header({ currentPage, onNavigate, cartCount, isDark, onToggleDark }: HeaderProps) {
+export default function Header({ currentPage, onNavigate, cartCount, isDark, onToggleDark, user, onAuthClick, onLogout }: HeaderProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -101,18 +104,40 @@ export default function Header({ currentPage, onNavigate, cartCount, isDark, onT
             </button>
 
             {/* Profile */}
-            <Button
-              onClick={() => onNavigate("cabinet")}
-              size="sm"
-              className={`rounded-xl font-medium transition-all duration-200 hidden sm:flex ${
-                currentPage === "cabinet"
-                  ? "btn-gradient shadow-brand-sm"
-                  : "bg-secondary text-foreground hover:bg-secondary/80"
-              }`}
-            >
-              <Icon name="User" size={15} className="mr-1.5" />
-              Кабинет
-            </Button>
+            {user ? (
+              <div className="hidden sm:flex items-center gap-1">
+                <Button
+                  onClick={() => onNavigate("cabinet")}
+                  size="sm"
+                  className={`rounded-xl font-medium transition-all duration-200 ${
+                    currentPage === "cabinet"
+                      ? "btn-gradient shadow-brand-sm"
+                      : "bg-secondary text-foreground hover:bg-secondary/80"
+                  }`}
+                >
+                  <div className="w-4 h-4 rounded-full gradient-brand flex items-center justify-center mr-1.5">
+                    <span className="text-white text-[9px] font-bold">{user.name[0]}</span>
+                  </div>
+                  {user.name.split(" ")[0]}
+                </Button>
+                <button
+                  onClick={onLogout}
+                  className="p-2 rounded-xl text-muted-foreground hover:text-destructive hover:bg-secondary transition-all"
+                  title="Выйти"
+                >
+                  <Icon name="LogOut" size={15} />
+                </button>
+              </div>
+            ) : (
+              <Button
+                onClick={onAuthClick}
+                size="sm"
+                className="rounded-xl font-medium btn-gradient hidden sm:flex"
+              >
+                <Icon name="LogIn" size={15} className="mr-1.5" />
+                Войти
+              </Button>
+            )}
 
             {/* Mobile menu */}
             <button
